@@ -1,0 +1,101 @@
+<% layout('layouts/boilerplate') -%>
+
+<section class="container">
+
+    <h1 class="display-6">My Cart</h1>
+
+    <div class="row">
+
+        <div class="col-lg-8">
+
+            <% for(let item of user.cart){ %>
+
+                <div class="card mx-auto mb-3 shadow-sm" style="max-width: 540px;">
+
+                    <div class="row g-0">
+
+                        <div class="col-4">
+                            <img src="<%= item.img %>" class="img-fluid rounded-start h-100" alt="product image">
+                        </div>
+
+                        <div class="col-8">
+
+                            <div class="card-body d-flex flex-column justify-content-between h-100">
+
+                                <div>
+                                    <h5 class="card-title"><%= item.name %></h5>
+                                    <p class="card-text"><%= item.desc %></p>
+                                    <p class="fw-bold">$ <%= item.price %></p>
+                                </div>
+
+                                <form action="/user/<%= item._id %>/remove?_method=DELETE" method="POST">
+
+                                    <button class="btn btn-sm btn-danger">
+                                        Remove From Cart
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            <% } %>
+
+        </div>
+
+
+
+        <div class="col-lg-4">
+
+            <ul class="list-group shadow-sm">
+
+                <% for(let item of user.cart) { %>
+
+                    <li class="list-group-item d-flex justify-content-between">
+
+                        <span>
+                            <span class="fw-bold"><%= item.name %></span>
+                        </span>
+
+                        <span>
+                            $ <%= item.price %>
+                        </span>
+
+                    </li>
+
+                <% } %>
+
+                <li class="list-group-item fw-bold">
+                    Total Amount : $ <%= totalAmount %>
+                </li>
+
+            </ul>
+
+
+
+            <form action="/payment/payumoney" method="POST">
+
+                <input type="hidden" name="amount" value="<%= totalAmount %>"/>
+
+                <input type="hidden" name="phone" value="9999999999" />
+
+                <input type="hidden" name="service_provider" value="payu_paisa"/>
+
+                <input type="hidden" name="productinfo" value="<%= productInfo %>"/>
+
+                <button type="submit" class="btn btn-success my-3 w-100">
+                    Checkout
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
